@@ -1,16 +1,21 @@
 #include <iostream>
+#include <fstream>
+#include<conio.h>
+#include<string.h>
 #include<stdlib.h>
-#include<stdio.h>
 
 using namespace std;
+string Desencriptar(string binario);
+string leer(string nombre_archivo);
+
 
 int main()
 {
-    int opcion;
-    char contrasena [100];
-    char enter;
-
-
+    int opcion,contador,numero;
+    string Acontrasena,contrasena,numeros,sacado,temp,p="sudo.txt";
+    string enteros;
+    ofstream Guardar;
+    Guardar.open("../practica_tres_aplicacion/BD/usuarios.txt",ios::app);
     cout<<"****** BIENBENIDO A SU CAJERO VIRTUAL ******"<<endl;
     cout<<"*                                          *"<<endl;
     cout<<"********************************************"<<endl;
@@ -30,9 +35,38 @@ int main()
         cout<<"*           INGRESE SU CONTRASENA          *"<<endl;
         cout<<"********************************************"<<endl;
         cin>>contrasena;
+
+        sacado=leer(p);
+
+
+
+        for(unsigned int i=0;i<sacado.length();i++){
+            if (sacado.at(i) == ' '){
+                Acontrasena+=Desencriptar(temp);
+                //cout<<Acontrasena<<endl;
+                temp="";
+            }else{
+                temp+=sacado.at(i);
+}
+        }
+        Acontrasena+=Desencriptar(temp);
+        //cout<<Acontrasena<<endl;
+        for(unsigned int i=0;i<=Acontrasena.length();i++){
+            if (contador%8==0&&contador!=0){
+                numero=std::stoi(enteros, nullptr, 2);
+                numeros+=char(numero);
+                enteros="";
+            }if(i==Acontrasena.length()){
+                break;
+            }
+            enteros+=Acontrasena.at(i);
+            contador+=1;
+        }
+        //cout<<numeros<<endl;
+        _sleep(1000);
         system("CLS");//borra todo lo que estree en la consola
         while(opcion!=2){
-            if(contrasena==contrasena){
+            if(contrasena==numeros){
                 cout<<"********************************************"<<endl;
                 cout<<"*             QUE QUIERE HECER             *"<<endl;
                 cout<<"********************************************"<<endl;
@@ -42,19 +76,28 @@ int main()
                 cout<<"*                                          *"<<endl;
                 cout<<"********************************************"<<endl;
                 cin>>opcion;
+                _sleep(1000);
+                system("CLS");
+                if(opcion==1){
+                    cout<<"********************************************"<<endl;
+                    cout<<"*      INGRESE EL NUEVO USUARIO ASI        *"<<endl;
+                    cout<<"********************************************"<<endl;
+                    cout<<"*                                          *"<<endl;
+                    cout<<"*      <CEDULA>,<CONTRASENA>,<SALDO>       *"<<endl;
+                    cout<<"*                                          *"<<endl;
+                    cout<<"********************************************"<<endl;
+
+                    cin>>contrasena;
+
+
+                    Guardar << contrasena<< endl;
+                    _sleep(3500);
+                    system("CLS");
+                }
+                system("CLS");//borra todo lo que estree en la consola
             }
             system("CLS");//borra todo lo que estree en la consola
-            if(opcion==1){
-                cout<<"********************************************"<<endl;
-                cout<<"*      INGRESE EL NUEVO USUARIO ASI        *"<<endl;
-                cout<<"********************************************"<<endl;
-                cout<<"*                                          *"<<endl;
-                cout<<"*      <CEDULA>,<CONTRASENA>,<SALDO>       *"<<endl;
-                cout<<"*                                          *"<<endl;
-                cout<<"********************************************"<<endl;
-                cin>>contrasena;
-            }
-            system("CLS");//borra todo lo que estree en la consola
+
         }
         break;
     case 2:
@@ -113,4 +156,65 @@ int main()
 
 
     return 0;
+}
+string Desencriptar(string binario){
+    string l;
+    unsigned int contador=0;
+    for (unsigned int i=0;i<binario.length();++i){
+        if (contador==binario.length()-1){
+            l+=binario.at(0);
+
+        }
+        if (i+1<binario.length()){
+            l+= binario.at(i+1);
+        }
+        contador+=1;
+    }
+    //cout<<l<<endl;
+    return l;
+}
+
+string leer(string nombre_archivo){
+    string data;
+    string texto;
+    // Abre el archivo en modo lectura
+    ifstream infile;
+    string direccion="../practica_tres_aplicacion/BD/";
+    direccion+=nombre_archivo;
+    // Se pone de manera explicita la ruta relativa donde se encuentra el archivo
+    infile.open(direccion);
+
+    // Se comprueba si el archivo fue abierto exitosamente
+    if (!infile.is_open())
+    {
+        cout << "Error abriendo el archivo" << endl;
+        exit(1);
+    }
+    while(!infile.eof()){
+        infile>>data;
+        if (texto==""){
+            texto= data;
+        }
+        else{
+            texto= texto+ " " + data;
+        }
+        //cout<<texto<<"-"<<endl;
+    }
+    //cout << "Leyendo el archivo" << endl;
+    //cout<<texto<<"#"<<endl;
+    //    infile >> data;
+
+    // Se escribe el dato en la pantalla
+    //cout << data << endl;
+    //cout << "longitud: " << data.length() << endl;
+
+    //cout << "Impresion caracter a caracter" << endl;
+    //    for (unsigned int i = 0; i < data.length(); i++) {
+    //        cout << data.at(i) << endl;
+    //    }
+
+    // Se cierra el archivo abierto
+    infile.close();
+    //cout << texto << endl;
+    return texto;
 }
