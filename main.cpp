@@ -313,9 +313,10 @@ int main()
                 remove("../practica_tres_aplicacion/BD/usuarios.txt");
                 rename("../practica_tres_aplicacion/BD/temporal.txt","../practica_tres_aplicacion/BD/usuarios.txt");
                 _sleep(3500);
+                opcion=3;
             }
             system("CLS");//borra todo lo que estree en la consola
-            opcion=3;
+
 
             if(opcion==2){
                 cout<<"********************************************"<<endl;
@@ -343,6 +344,7 @@ int main()
                 remove("../practica_tres_aplicacion/BD/usuarios.txt");
                 rename("../practica_tres_aplicacion/BD/temporal.txt","../practica_tres_aplicacion/BD/usuarios.txt");
                 _sleep(3500);
+                opcion=3;
             }
             system("CLS");//borra todo lo que estree en la consola
         }
